@@ -1,0 +1,35 @@
+
+version: '3.8'
+services:
+  db:
+    build: ./mysql
+    environment:
+      TZ: "Asia/Tokyo"
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: myapp
+      MYSQL_USER: myappuser
+      MYSQL_PASSWORD: myapppass
+    volumes:
+      - db-data:/var/lib/mysql
+  php:
+    build: ./php
+    depends_on:
+    - db
+    ports:
+    - 8562:8000
+    volumes:
+    - ./work:/work
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      PMA_USER: myappuser
+      PMA_PASSWORD: myapppass
+    ports:
+      - "4040:80"
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
+
+volumes:
+  db-data:
