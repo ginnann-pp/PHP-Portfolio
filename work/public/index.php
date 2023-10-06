@@ -7,6 +7,10 @@
 <body>
   <h1>Todos</h1>
 
+  <form action="">
+    <input type="text">
+  </form>
+
 
   <a href="./test.html">aaaa</a>
 </body>
