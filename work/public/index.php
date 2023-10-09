@@ -12,7 +12,6 @@ try {
     PDO::ATTR_EMULATE_PREPARES => false, //SQLインジェクション対策
   ]);
   echo '接続成功';
-
 } catch (PDOException $e) {
   echo '接続失敗' . $e->getMessage() . "\n";
   exit();
@@ -22,23 +21,25 @@ try {
 $sql = "SELECT * FROM threads";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// threadsテーブルの中身を抽出
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
+
+
+// fomr内容を取得してDBに登録
 
 
 
-foreach($data as $val) {
-  echo "<br/>";
-  echo $val ["id"], ":";
-  echo $val ["title"], ":";
-}
+$add_threads = filter_input(INPUT_GET, "title");
 
 
-
-
-
-
-// テーブルの表示
+// $stmt_add = $pdo->prepare("INSERT INTO  threads (title) VALUES (:title)");
+// $stmt_add->bindValue('title', $add_threads, \PDO::PARAM_STR);
+// if ($stmt_add->execute()) {
+//   // データの挿入が成功した場合の処理
+//   echo "データが正常に追加されました。";
+// } else {
+//   // データの挿入が失敗した場合の処理
+//   echo "エラー：データの追加に失敗しました。";
+// }
 
 ?>
 
@@ -57,27 +58,21 @@ foreach($data as $val) {
     <h1>掲示板アプリ</h1>
   </header>
 
+  <section>
+    <form action="GET">
+      <input type="text" name="title">
+      <input type="submit" value="追加">
+    </form>
+    <!-- DBにタイトルを決めて登録 -->
+  </section>
+
+
   <div class="grid">
-    <div class="item">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-    </div>
-    <div class="item">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-    </div>
-    <div class="item">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-    </div>
-    <div class="item">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-    </div>
+    <?php foreach ($data as $val) : ?>
+      <div class="item">
+        <p><?= $val["title"]; ?></p>
+      </div>
+    <?php endforeach; ?> <!-- for文でtitleを表示 -->
   </div>
 
 
