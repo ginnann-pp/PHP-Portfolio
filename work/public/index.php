@@ -37,7 +37,6 @@ function add_todo($pdo) {
   // prepareでDBにinput内容挿入
   $sql = "INSERT INTO threads (title) VALUES (:title)";
   $stmt = $pdo->prepare($sql);
-  // $stmt->bindval('title', $title, PDO::PARAM_STR);
   $stmt->bindValue('title', $title, PDO::PARAM_STR);
   $stmt->execute();
 }
@@ -58,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./css/styles.css">
   <title>Document</title>
 </head>
 
@@ -84,6 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endforeach; ?> <!-- for文でtitleを表示 -->
   </div>
 
+
+  <a href="./screens/chat.php">移動</a>
 
 </body>
 
