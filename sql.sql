@@ -11,3 +11,7 @@ CREATE TABLE posts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (thread_id) REFERENCES threads(id),
 ); ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- その他
+
