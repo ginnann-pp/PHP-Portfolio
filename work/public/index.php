@@ -1,10 +1,12 @@
 <?php
 
+// DB設定を定数で指定
 define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
 define('DB_USER', 'myappuser');
 define('DB_PASS', 'myapppass');
-// DB設定を定数で指定
+define('SITE_URL', 'http://' . $_SERVER['HTTP_HOST']); //定数でheaderURL指定
 
+// PDOでphp_portfolio DBに接続
 try {
   $pdo = new PDO(DSN, DB_USER, DB_PASS, [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //連想配列
@@ -16,30 +18,37 @@ try {
   echo '接続失敗' . $e->getMessage() . "\n";
   exit();
 }
-// PDOでphp_portfolio DBに接続
 
+// DBの内容を表示
 $sql = "SELECT * FROM threads";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 
+// 使用関数群
+
+// DBに追加
+function add_todo($pdo) {
+  $title = trim(filter_input(INPUT_POST, 'title'));
+  if ($title === '') {
+    return;
+  }
+
+  // prepareでDBにinput内容挿入
+  $sql = "INSERT INTO threads (title) VALUES (:title)";
+  $stmt = $pdo->prepare($sql);
+  // $stmt->bindval('title', $title, PDO::PARAM_STR);
+  $stmt->bindValue('title', $title, PDO::PARAM_STR);
+  $stmt->execute();
+}
 
 // fomr内容を取得してDBに登録
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  add_todo($pdo);
 
-
-
-$add_threads = filter_input(INPUT_GET, "title");
-
-
-// $stmt_add = $pdo->prepare("INSERT INTO  threads (title) VALUES (:title)");
-// $stmt_add->bindValue('title', $add_threads, \PDO::PARAM_STR);
-// if ($stmt_add->execute()) {
-//   // データの挿入が成功した場合の処理
-//   echo "データが正常に追加されました。";
-// } else {
-//   // データの挿入が失敗した場合の処理
-//   echo "エラー：データの追加に失敗しました。";
-// }
+  header('Location: ' . SITE_URL);
+  exit;
+}
 
 ?>
 
@@ -59,7 +68,7 @@ $add_threads = filter_input(INPUT_GET, "title");
   </header>
 
   <section>
-    <form action="GET">
+    <form action="" method="POST">
       <input type="text" name="title">
       <input type="submit" value="追加">
     </form>
