@@ -1,4 +1,11 @@
 <?php
+// セッション開始
+session_start();
+
+// formから来たthread_idをセッションに保存
+if(isset(filter_input(INPUT_POST, "")))
+
+// 値があればsession更新して画面移動
 
 // DB設定を定数で指定
 define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
@@ -74,13 +81,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- DBにタイトルを決めて登録 -->
   </section>
 
-
+<!-- for文でtitleを表示 -->
   <div class="grid">
     <?php foreach ($data as $val) : ?>
-      <div class="item">
+      <div class="item" data-thread_id="<?= $val["id"] ;?>">
         <p><?= $val["title"]; ?></p>
       </div>
-    <?php endforeach; ?> <!-- for文でtitleを表示 -->
+      <?php endforeach; ?> 
   </div>
 
 
