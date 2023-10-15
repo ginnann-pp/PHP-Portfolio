@@ -3,7 +3,6 @@
 session_start();
 
 // formから来たthread_idをセッションに保存
-if(isset(filter_input(INPUT_POST, "")))
 
 // 値があればsession更新して画面移動
 
@@ -51,11 +50,9 @@ function add_todo($pdo) {
 // fomr内容を取得してDBに登録
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   add_todo($pdo);
-
   header('Location: ' . SITE_URL);
   exit;
-}
-
+};
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- for文でtitleを表示 -->
   <div class="grid">
     <?php foreach ($data as $val) : ?>
-      <div class="item" data-thread_id="<?= $val["id"] ;?>">
+      <div class="item" data-thread-id="<?= $val["id"] ;?>">
         <p><?= $val["title"]; ?></p>
       </div>
       <?php endforeach; ?> 
@@ -92,6 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
   <a href="./screens/chat.php">移動</a>
+
+  <script src="./JS/main.js"></script>
 
 </body>
 
