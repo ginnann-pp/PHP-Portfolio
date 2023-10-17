@@ -2,6 +2,7 @@
 session_start();
 
 echo ($_SESSION['threadID']);
+$threadID = $_SESSION['threadID'];
 
 // DB設定を定数で指定
 define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
@@ -22,8 +23,9 @@ try {
   }
 
 // WHERE句で指定したthread_id取得
-$sql = "SELECT * FROM posts WHERE thread_id = 2";
+$sql = "SELECT * FROM posts WHERE thread_id = (:id)";
 $stmt = $pdo->prepare($sql);
+$stmt->bindValue('id', $threadID);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 
