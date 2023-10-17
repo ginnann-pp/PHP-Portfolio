@@ -1,15 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION) && !empty($_SESSION)) {
-  echo "セッション内のデータ一覧:<br>";
-
-  foreach ($_SESSION as $key => $value) {
-      echo "$key: $value<br>";
-  }
-} else {
-  echo "セッションにデータは保存されていません。";
-}
+echo $_SESSION['threadID'];
 
 // DB設定を定数で指定
 define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
@@ -17,7 +9,6 @@ define('DB_USER', 'myappuser');
 define('DB_PASS', 'myapppass');
 define('SITE_URL', 'http://' . $_SERVER['HTTP_HOST']); //定数でheaderURL指定
 
-// PDOでphp_portfolio DBに接続
 try {
   $pdo = new PDO(DSN, DB_USER, DB_PASS, [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //連想配列

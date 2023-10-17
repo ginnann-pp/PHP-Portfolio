@@ -22,6 +22,10 @@ header {
     text-align: left;
   }
 
+  div {
+    cursor: pointer;
+  }
+
 
   /* form */
 

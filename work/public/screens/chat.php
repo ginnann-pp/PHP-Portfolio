@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-echo ($_SESSION['count']);
+echo ($_SESSION['threadID']);
 
 // DB設定を定数で指定
 define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
