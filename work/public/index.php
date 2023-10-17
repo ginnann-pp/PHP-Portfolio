@@ -1,10 +1,15 @@
 <?php
-// セッション開始
 session_start();
 
-// formから来たthread_idをセッションに保存
+if (isset($_SESSION) && !empty($_SESSION)) {
+  echo "セッション内のデータ一覧:<br>";
 
-// 値があればsession更新して画面移動
+  foreach ($_SESSION as $key => $value) {
+      echo "$key: $value<br>";
+  }
+} else {
+  echo "セッションにデータは保存されていません。";
+}
 
 // DB設定を定数で指定
 define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
@@ -53,6 +58,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   header('Location: ' . SITE_URL);
   exit;
 };
+
+
+// //データーをjsからセッションに保管
+// if($_SERVER['REQUEST_METHOD'] === 'POST') {
+//   $dataValue = $_POST['dataValue'];
+//   echo ($dataValue);
+//   $_SERVER['saved_data'] =$dataValue;
+//   http_response_code(200);
+// } else {
+//   http_response_code(400);
+// }
+
+
 ?>
 
 <!DOCTYPE html>
