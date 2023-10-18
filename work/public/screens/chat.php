@@ -34,7 +34,7 @@ function add_comment($pdo)
   $threadID = $_SESSION['threadID'];
 
   // sql文作成
-  $sql = "INSERT INTO `posts` (`id`, `thread_id`, `content`, `created_at`) VALUES (NULL, :thread_id, :comment, CURRENT_TIMESTAMP);"; // プレースホルダー内のシングルクォートを削除
+  $sql = "INSERT INTO `posts` (`id`, `thread_id`, `content`, `created_at`) VALUES (NULL, :thread_id, :comment, CURRENT_TIMESTAMP);"; 
   $stmt = $pdo->prepare($sql);
   $stmt->bindParam(':thread_id', $threadID, PDO::PARAM_INT);
   $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);

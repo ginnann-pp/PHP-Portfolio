@@ -21,7 +21,6 @@ class Database
                 ]
               );
             }
-            echo '接続成功';
             return self::$instance;
 
             

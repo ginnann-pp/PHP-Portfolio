@@ -13,8 +13,6 @@ $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 
 // 使用関数群
-
-
 // fomr内容を取得してDBに登録
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   add_todo($pdo);
@@ -48,10 +46,18 @@ function add_todo($pdo) {
 </head>
 
 <body>
+
+  
+  <h1><a href="./screens/log-in.php">ログイン</a></h1>
+  <!-- アカウントログイン -->
   <header>
-    <h1>掲示板アプリ</h1>
+    <div class="app-header">
+      <h3>掲示板アプリ</h3>
+      <p>ユーザー名</p>
+    </div>  
   </header>
 
+<!-- o送信 -->
   <section>
     <form action="" method="POST">
       <input type="text" name="title">
@@ -68,9 +74,6 @@ function add_todo($pdo) {
       </div>
       <?php endforeach; ?> 
   </div>
-
-
-  <a href="./screens/chat.php">移動</a>
 
   <script src="./JS/main.js"></script>
 

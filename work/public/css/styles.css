@@ -5,6 +5,13 @@ header {
     text-align: center;
     margin-bottom: 50px;
 }
+
+.app-header {
+
+  background-color: #6577c5;
+  display: flex;
+  justify-content: space-around;
+}
 .grid {
     margin-left: 10%;
     margin-right: 10%;
