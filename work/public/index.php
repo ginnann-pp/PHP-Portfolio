@@ -29,6 +29,14 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 
 // 使用関数群
 
+
+// fomr内容を取得してDBに登録
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  add_todo($pdo);
+  header('Location: ' . SITE_URL);
+  exit;
+};
+
 // DBに追加
 function add_todo($pdo) {
   $title = trim(filter_input(INPUT_POST, 'title'));
@@ -42,26 +50,6 @@ function add_todo($pdo) {
   $stmt->bindValue('title', $title, PDO::PARAM_STR);
   $stmt->execute();
 }
-
-// fomr内容を取得してDBに登録
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  add_todo($pdo);
-  header('Location: ' . SITE_URL);
-  exit;
-};
-
-
-// //データーをjsからセッションに保管
-// if($_SERVER['REQUEST_METHOD'] === 'POST') {
-//   $dataValue = $_POST['dataValue'];
-//   echo ($dataValue);
-//   $_SERVER['saved_data'] =$dataValue;
-//   http_response_code(200);
-// } else {
-//   http_response_code(400);
-// }
-
-
 ?>
 
 <!DOCTYPE html>
