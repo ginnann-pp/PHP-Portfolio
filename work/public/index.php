@@ -1,25 +1,10 @@
 <?php
-session_start();
 
-echo $_SESSION['threadID'];
+require_once(__DIR__ . '/../app/Props/Config.php');
 
-// DB設定を定数で指定
-define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
-define('DB_USER', 'myappuser');
-define('DB_PASS', 'myapppass');
-define('SITE_URL', 'http://' . $_SERVER['HTTP_HOST']); //定数でheaderURL指定
+use MyApp\Database;
 
-try {
-  $pdo = new PDO(DSN, DB_USER, DB_PASS, [
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //連想配列
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //例外
-    PDO::ATTR_EMULATE_PREPARES => false, //SQLインジェクション対策
-  ]);
-  echo '接続成功';
-} catch (PDOException $e) {
-  echo '接続失敗' . $e->getMessage() . "\n";
-  exit();
-}
+$pdo = Database::getInstance();
 
 // DBの内容を表示
 $sql = "SELECT * FROM threads";

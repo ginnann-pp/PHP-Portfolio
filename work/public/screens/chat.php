@@ -1,27 +1,12 @@
 <?php
-session_start();
 
-echo ($_SESSION['threadID']);
+require_once(__DIR__ . '/../../app/Props/Config.php');
+
+use MyApp\Database;
+
+$pdo = Database::getInstance();
+
 $threadID = $_SESSION['threadID'];
-
-// DB設定を定数で指定
-define('DSN', 'mysql:host=db;dbname=php_portfolio;charset=utf8mb4');
-define('DB_USER', 'myappuser');
-define('DB_PASS', 'myapppass');
-define('SITE_URLS', "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']); //定数でheaderURL指定
-
-// PDOでphp_portfolio DBに接続
-try {
-  $pdo = new PDO(DSN, DB_USER, DB_PASS, [
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //連想配列
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //例外
-    PDO::ATTR_EMULATE_PREPARES => false, //SQLインジェクション対策
-  ]);
-  echo '接続成功';
-} catch (PDOException $e) {
-  echo '接続失敗' . $e->getMessage() . "\n";
-  exit();
-}
 
 // WHERE句で指定したthread_id取得
 $sql = "SELECT * FROM posts WHERE thread_id = (:id)";
@@ -34,7 +19,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 // POSTで受け取り
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   add_comment($pdo);
-  header('Location:' . SITE_URLS);
+  header('Location:' . $_SERVER["REQUEST_URI"]);
   exit();
 }
 
