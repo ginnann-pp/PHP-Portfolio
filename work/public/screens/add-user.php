@@ -24,6 +24,7 @@ function addUser($pdo)
 
     if (count($stmt->fetchAll())) {
         echo '使っているよ;';
+        echo "<script>alert('すでに使用されているアカウント名です');</script>";
     }
 
     /* データ挿入 */
@@ -31,6 +32,7 @@ function addUser($pdo)
     $stmt->bindValue(1, $_POST['username']);
     $stmt->bindValue(2, $_POST['password']);
     $stmt->execute();
+    echo "<script>alert('アカウント登録が完了しました');</script>";
 }
 
 
