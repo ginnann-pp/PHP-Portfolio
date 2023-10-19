@@ -9,8 +9,9 @@ $pdo = Database::getInstance();
 // fomrで受けと取り、DBに同じものがあればセッションに保存
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     userCheck($pdo);
-    // チェックが良ければセッションに保存
     // 掲示板画面に画面推移
+    header('Location: ' . SITE_URL);
+    exit();
 };
 
 function userCheck($pdo)
@@ -27,11 +28,9 @@ function userCheck($pdo)
     $user = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 
     if ($user) {
-        foreach($user as $user) {
-            echo $user['name'];
-            echo "</br>";
-            echo $user['password'];
-        }
+        $_SESSION['userName'] = $user['name'];
+        session_write_close();
+
         } else {
         // ない場合（ログイン失敗）
         echo "アカウントがないよ";

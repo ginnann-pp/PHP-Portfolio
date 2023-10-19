@@ -1,3 +1,37 @@
+<?php
+require_once(__DIR__ . '/../../app/Props/Config.php');
+
+use MyApp\Database;
+
+$pdo = Database::getInstance();
+
+// POSTで取得
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    addUser($pdo);
+}
+
+// addUser関数
+function addUser ($pdo) {
+    $userName = filter_input(INPUT_POST, 'username');
+    $password = filter_input(INPUT_POST, 'password');
+
+    // DBに値があるか確認
+    /* 重複チェック */
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE name=?');
+    $stmt->bindValue(1, $_POST['username']);
+    $stmt->execute();
+
+    if (count($stmt->fetchAll())) {
+        echo '使っているよ;';
+      } else {
+        echo '使っていないよ';
+      }
+
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,12 +45,9 @@
 <h1><a href="./log-in.php">ログイン画面</a></h1>
     <div class="container">
         <h2>アカウント作成</h2>
-        <form method="post" action="register.php">
+        <form method="POST">
             <label for="username">ユーザー名：</label>
             <input type="text" name="username" id="username" required>
-
-            <label for="email">メールアドレス：</label>
-            <input type="email" name="email" id="email" required>
 
             <label for="password">パスワード：</label>
             <input type="password" name="password" id="password" required>
