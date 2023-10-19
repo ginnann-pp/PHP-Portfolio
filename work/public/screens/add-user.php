@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // addUser関数
-function addUser ($pdo) {
+function addUser($pdo)
+{
     $userName = filter_input(INPUT_POST, 'username');
     $password = filter_input(INPUT_POST, 'password');
 
@@ -23,10 +24,13 @@ function addUser ($pdo) {
 
     if (count($stmt->fetchAll())) {
         echo '使っているよ;';
-      } else {
-        echo '使っていないよ';
-      }
+    }
 
+    /* データ挿入 */
+    $stmt = $pdo->prepare('INSERT INTO users (name, password) VALUES (?, ?)');
+    $stmt->bindValue(1, $_POST['username']);
+    $stmt->bindValue(2, $_POST['password']);
+    $stmt->execute();
 }
 
 
@@ -34,15 +38,17 @@ function addUser ($pdo) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>アカウント作成</title>
     <link rel="stylesheet" href="../css/add-user.css">
 </head>
+
 <body>
 
-<h1><a href="./log-in.php">ログイン画面</a></h1>
+    <h1><a href="./log-in.php">ログイン画面</a></h1>
     <div class="container">
         <h2>アカウント作成</h2>
         <form method="POST">
@@ -56,4 +62,5 @@ function addUser ($pdo) {
         </form>
     </div>
 </body>
+
 </html>
