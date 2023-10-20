@@ -1,9 +1,6 @@
 <?php
 
 // 読み込み先のファイルに最初に記述で先頭でセッション開始
-
-use function PHPSTORM_META\sql_injection_subst;
-
 session_start();
 
 // DB設定を定数で指定

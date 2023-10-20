@@ -11,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     userCheck($pdo);
     // 掲示板画面に画面推移
     header('Location: ' . SITE_URL);
-    exit();
-};
+    exit;
+}
 
 function userCheck($pdo)
 {
@@ -25,15 +25,16 @@ function userCheck($pdo)
     $stmt->bindValue(':name', $name);
     $stmt->bindValue(':password', $password);
     $stmt->execute();
-    $user = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
+    $user = $stmt->fetch(PDO::FETCH_ASSOC); //連想配列で取得
 
     if ($user) {
-        $_SESSION['userName'] = $user['name'];
-        session_write_close();
+        $name = $user['name'];
+        // 他のユーザー情報も同様に取得できます    
+        echo "Name: " . $name . "<br>";
+        $_SESSION['userName'] = $name;
 
-        } else {
-        // ない場合（ログイン失敗）
-        echo "アカウントがないよ";
+    } else {
+        echo "アカウントが存在しません。";
     }
 };
 
