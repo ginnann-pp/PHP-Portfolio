@@ -28,11 +28,9 @@ function userCheck($pdo)
     $user = $stmt->fetch(PDO::FETCH_ASSOC); //連想配列で取得
 
     if ($user) {
-        $name = $user['name'];
         // 他のユーザー情報も同様に取得できます    
-        echo "Name: " . $name . "<br>";
-        $_SESSION['userName'] = $name;
-
+        $_SESSION['userName'] = $user['name'];
+        $_SESSION['userID'] = $user['thread-id'];
     } else {
         echo "アカウントが存在しません。";
     }

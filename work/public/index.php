@@ -49,6 +49,9 @@ function add_todo($pdo) {
 
   <h1><?=$_SESSION['threadID'];?></h1>
   <h1><?=$_SESSION['userName'];?></h1>
+  <h1><?=$_SESSION['userID'];?></h1>
+
+  
   <h1><a href="./screens/log-in.php">ログイン</a></h1>
   <!-- アカウントログイン -->
   <header>

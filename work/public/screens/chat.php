@@ -8,6 +8,7 @@ $pdo = Database::getInstance();
 
 $threadID = $_SESSION['threadID'];
 
+
 // WHERE句で指定したthread_id取得
 $sql = "SELECT * FROM posts WHERE thread_id = (:id)";
 $stmt = $pdo->prepare($sql);
