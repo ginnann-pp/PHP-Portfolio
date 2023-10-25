@@ -47,11 +47,11 @@ function add_todo($pdo) {
 
 <body>
 
-  <h1><?=$_SESSION['threadID'];?></h1>
+  <h1>threadID:<?=$_SESSION['threadID'];?></h1>
+  <h1>userID: <?=$_SESSION['user-thread-id'];?></h1>
   <h1><?=$_SESSION['userName'];?></h1>
-  <h1><?=$_SESSION['userID'];?></h1>
 
-  
+
   <h1><a href="./screens/log-in.php">ログイン</a></h1>
   <!-- アカウントログイン -->
   <header>

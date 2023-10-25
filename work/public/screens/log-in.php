@@ -30,7 +30,8 @@ function userCheck($pdo)
     if ($user) {
         // 他のユーザー情報も同様に取得できます    
         $_SESSION['userName'] = $user['name'];
-        $_SESSION['userID'] = $user['thread-id'];
+        $_SESSION['user-thread-id'] = $user['thread-id'];
+        $_SESSION['user-id'] = $user['id'];
     } else {
         echo "アカウントが存在しません。";
     }
