@@ -2,21 +2,24 @@ const items = document.querySelectorAll('.item');
 
 items.forEach(item => {
     item.addEventListener('click', () => {
-        threadId = item.dataset.threadId
+        const threadId = item.dataset.threadId; // constを追加
 
         fetch('../screens/session.php', {
-            method: 'POST', // メソッド指定
-            headers: { 'Content-Type': 'application/json' }, // jsonを指定
-            body: JSON.stringify(threadId) // json形式に変換して添付
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ threadId: threadId }) // オブジェクトとして包む
         })
-        .then(response=>response.json())
-        .then(res=> {
-            console.log('成功');
-            console.log(res)
-            // window.location.href = '../screens/chat.php'
+        .then(response => response.json())
+        .then(res => {
+            if (res.respons_ID === threadId) {
+                console.log('成功');
+                window.location.href = '../screens/chat.php'
+            } else {
+                console.log('あたいが違います')
+            }
         })
-        .catch(error=> {
+        .catch(error => {
             console.log(error);
-        })
-    })
-})
+        });
+    });
+});
