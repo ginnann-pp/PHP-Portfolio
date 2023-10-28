@@ -18,15 +18,17 @@ if ($data->threadId == $user_ID) {
 } else if ($user_ID === 0) {
     // UserIDが0の場合
     $response = [
-        "message" => "あたいがゼロなので掲示板登録しました",
+        "message" => "あたいがゼロなので観覧モード",
         "respons_ID" => $user_ID
     ];
+    $_SESSION['threadID'] = $data->threadId;
 } else {
-    // UserIDが0でも同じでもない場合
+    // 他の掲示板にログインをしているので画面移動はなし
     $response = [
-        "message" => "あたいが掲示板の値と違う",
+        "message" => "他の掲示板にログインしているので画面移動はできません",
     ];
 }
+
 
 // ヘッダーを設定してJSONレスポンスを返す
 header('Content-Type: application/json');
