@@ -18,8 +18,7 @@ items.forEach(item => {
                 console.log('初期値なので掲示板登録')
                 if(confirm('この掲示板にはいりますか？')) {
                     add_thread_ID(threadId);
-                    alert('成功しました')
-                    // window.location.href = '../screens/chat.php'
+
                 } else {
                     return;
                 }
@@ -41,10 +40,15 @@ function add_thread_ID(add_number) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ add_number: add_number }) // オブジェクトとして包む
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // JSONレスポンスをパース
+    })
     .then(res => {
         console.log(res);
-        console.log("登録に成功しました")
+        console.log("登録に成功しました");
     })
     .catch(error => {
         console.log(error);
