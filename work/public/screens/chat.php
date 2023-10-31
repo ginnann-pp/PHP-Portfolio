@@ -16,7 +16,6 @@ $stmt->bindValue('id', $threadID);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 
-// formの内容をDBに挿入
 // POSTで受け取り
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['submit'])) {
@@ -87,9 +86,9 @@ function add_comment($pdo)
   </header>
 
   <!-- クリックで今の掲示板IDをuser掲示板idに保存 -->
-  <form method="POST">
-    <input type="button" name="submit" value="add_thread_ID">
-  </form>
+  <form action="" method="POST">
+        <input type="submit" name="submit" value="add_thread_ID">
+    </form>
 
   <!-- for文でccontentを表示 -->
   <section class="grid">
@@ -106,10 +105,9 @@ function add_comment($pdo)
 
   <!-- DBにタイトルを決めて登録 -->
   <section>
-    <form action="" method="POST">
-      <input type="text">
-      <input type="submit" name="submit" value="add_comment">
-      <br>
+  <form action="" method="POST">
+        <input type="text">
+        <input type="submit" name="submit" value="add_comment">
     </form>
   </section>
 
