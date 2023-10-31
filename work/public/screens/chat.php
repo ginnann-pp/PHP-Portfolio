@@ -19,14 +19,34 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 // formの内容をDBに挿入
 // POSTで受け取り
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['submit'])) {
+      $selectedSubmit = $_POST['submit'];
+
+      switch ($selectedSubmit) {
+          case 'add_thread_ID':
+              echo "add_thread_IDが選択されました";
+              break;
+
+          case 'add_comment':
+              echo "add_commentが選択されました";
+              break;
+
+          default:
+              echo "不明なオプションです";
+      }
+  } else {
+      echo "オプションが選択されていません";
+  }
+} else {
+  echo "POSTリクエストが送信されていません";
+}
 
   // POST内容がdd_thread_IDの場合
 
   // POST内容がcommentの場合
-  add_comment($pdo);
-  header('Location:' . $_SERVER["REQUEST_URI"]);
-  exit();
-}
+  // add_comment($pdo);
+  // header('Location:' . $_SERVER["REQUEST_URI"]);
+  // exit();
 
 // 掲示板コメントform内容取得関数
 function add_comment($pdo)
@@ -50,10 +70,12 @@ function add_comment($pdo)
 
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>掲示板チャット</title>
   <link rel="stylesheet" type="text/css" href="../css/chat.css">
 </head>
+
 <body>
   <h1>threadID:<?= $_SESSION['threadID']; ?></h1>
   <h1>userID: <?= $_SESSION['user-thread-id']; ?></h1>
@@ -65,8 +87,8 @@ function add_comment($pdo)
   </header>
 
   <!-- クリックで今の掲示板IDをuser掲示板idに保存 -->
-  <form action="" method="POST">
-      <input type="add_thread_ID" value="追加">
+  <form method="POST">
+    <input type="button" name="submit" value="add_thread_ID">
   </form>
 
   <!-- for文でccontentを表示 -->
@@ -85,8 +107,8 @@ function add_comment($pdo)
   <!-- DBにタイトルを決めて登録 -->
   <section>
     <form action="" method="POST">
-      <input type="text" name="comment">
-      <input type="submit" value="追加">
+      <input type="text">
+      <input type="submit" name="submit" value="add_comment">
       <br>
     </form>
   </section>
