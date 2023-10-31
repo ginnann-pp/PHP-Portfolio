@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           case 'add_comment':
               echo "add_commentが選択されました";
+              add_comment($pdo);
+              header('Location:' . $_SERVER["REQUEST_URI"]);
               break;
 
           default:
@@ -39,13 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
   echo "POSTリクエストが送信されていません";
 }
-
-  // POST内容がdd_thread_IDの場合
-
-  // POST内容がcommentの場合
-  // add_comment($pdo);
-  // header('Location:' . $_SERVER["REQUEST_URI"]);
-  // exit();
 
 // 掲示板コメントform内容取得関数
 function add_comment($pdo)
@@ -106,7 +101,7 @@ function add_comment($pdo)
   <!-- DBにタイトルを決めて登録 -->
   <section>
   <form action="" method="POST">
-        <input type="text">
+        <input type="text" name="comment">
         <input type="submit" name="submit" value="add_comment">
     </form>
   </section>
