@@ -19,45 +19,70 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 // POSTで受け取り
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['submit'])) {
-      $selectedSubmit = $_POST['submit'];
+    $selectedSubmit = $_POST['submit'];
 
-      switch ($selectedSubmit) {
-          case 'add_thread_ID':
-              echo "add_thread_IDが選択されました";
-              break;
+    // 送信されたformによって分岐
+    switch ($selectedSubmit) {
+      case 'add_thread_ID':
+        echo "add_thread_IDが選択されました";
+        add_thread_ID($pdo);
+        break;
 
-          case 'add_comment':
-              echo "add_commentが選択されました";
-              add_comment($pdo);
-              header('Location:' . $_SERVER["REQUEST_URI"]);
-              break;
+      case 'add_comment':
+        echo "add_commentが選択されました";
+        add_comment($pdo);
+        header('Location:' . $_SERVER["REQUEST_URI"]);
+        break;
 
-          default:
-              echo "不明なオプションです";
-      }
+      default:
+        echo "不明なオプションです";
+    }
   } else {
-      echo "オプションが選択されていません";
+    echo "オプションが選択されていません";
   }
 } else {
   echo "POSTリクエストが送信されていません";
 }
 
-// 掲示板コメントform内容取得関数
+// 掲示板comment-form内容取得関数
 function add_comment($pdo)
 {
   $comment = filter_input(INPUT_POST, 'comment');
   if ($comment === '') {
     return;
   }
-
   $threadID = $_SESSION['threadID'];
-
   // sql文作成
   $sql = "INSERT INTO `posts` (`id`, `thread_id`, `content`, `created_at`) VALUES (NULL, :thread_id, :comment, CURRENT_TIMESTAMP);";
   $stmt = $pdo->prepare($sql);
   $stmt->bindParam(':thread_id', $threadID, PDO::PARAM_INT);
   $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
   $stmt->execute();
+}
+
+// 掲示板のIDをDBのUser_threadIDに追加（掲示板にログイン処理）
+function add_thread_ID($pdo)
+{
+  if (!empty($_SESSION['user-id'])) {
+    try {
+      $user_id = $_SESSION['user-id'];
+      $threadID = $_SESSION['threadID'];
+
+      $sql = "UPDATE users SET `thread-id` = :set_thread_id WHERE id = :user_id";
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':set_thread_id', $threadID, PDO::PARAM_INT);
+      $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+      if ($stmt->execute()) {
+        echo "データベースのthreadIDが更新されました";
+        $_SESSION['user-thread-id'] = $threadID;
+      } else {
+        echo "データベースのthreadID更新中にエラーが発生しました";
+      }
+    } catch (PDOException $e) {
+      echo "データベースエラー：" . $e->getMessage();
+    }
+  }
 }
 
 ?>
@@ -82,8 +107,8 @@ function add_comment($pdo)
 
   <!-- クリックで今の掲示板IDをuser掲示板idに保存 -->
   <form action="" method="POST">
-        <input type="submit" name="submit" value="add_thread_ID">
-    </form>
+    <input type="submit" name="submit" value="add_thread_ID">
+  </form>
 
   <!-- for文でccontentを表示 -->
   <section class="grid">
@@ -100,9 +125,9 @@ function add_comment($pdo)
 
   <!-- DBにタイトルを決めて登録 -->
   <section>
-  <form action="" method="POST">
-        <input type="text" name="comment">
-        <input type="submit" name="submit" value="add_comment">
+    <form action="" method="POST">
+      <input type="text" name="comment">
+      <input type="submit" name="submit" value="add_comment">
     </form>
   </section>
 
