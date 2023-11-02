@@ -15,18 +15,38 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 // 使用関数群
 // fomr内容を取得してDBに登録
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  add_todo($pdo);
-  header('Location: ' . SITE_URL);
-  exit;
-};
+  if (isset($_POST['submit'])) {
+    $selectedSubmit_index = $_POST['submit'];
+
+    switch ($selectedSubmit_index) {
+      case 'reset_thread_ID':
+        echo "restがおされました";
+        break;
+
+      case 'add_thread':
+        echo "add_trheadがおされました";
+        break;
+
+      default:
+        echo "不明なオプションです";
+    }
+  } else {
+    echo "選択されていません";
+  }
+  // add_todo($pdo);
+  // header('Location: ' . SITE_URL);
+  // exit;
+} else {
+  echo "POST送信されていません";
+}
 
 // DBに追加
-function add_todo($pdo) {
+function add_todo($pdo)
+{
   $title = trim(filter_input(INPUT_POST, 'title'));
   if ($title === '') {
     return;
   }
-
   // prepareでDBにinput内容挿入
   $sql = "INSERT INTO threads (title) VALUES (:title)";
   $stmt = $pdo->prepare($sql);
@@ -47,10 +67,9 @@ function add_todo($pdo) {
 
 <body>
 
-  <h1>threadID:<?=$_SESSION['threadID'];?></h1>
-  <h1>userID: <?=$_SESSION['user-thread-id'];?></h1>
-  <h1><?=$_SESSION['userName'];?></h1>
-
+  <h1>threadID:<?= $_SESSION['threadID']; ?></h1>
+  <h1>userID: <?= $_SESSION['user-thread-id']; ?></h1>
+  <h1><?= $_SESSION['userName']; ?></h1>
 
   <h1><a href="./screens/log-in.php">ログイン</a></h1>
   <!-- アカウントログイン -->
@@ -58,25 +77,30 @@ function add_todo($pdo) {
     <div class="app-header">
       <h3>掲示板アプリ</h3>
       <p>ユーザー名</p>
-    </div>  
+    </div>
   </header>
 
-<!-- o送信 -->
+  <!-- Thrad=IDの初期化 -->
+  <form action="" method="POST">
+    <input type="submit" name="submit" value="reset_thread_ID">
+  </form>
+
+  <!-- 掲示板作成fomr -->
   <section>
     <form action="" method="POST">
       <input type="text" name="title">
-      <input type="submit" value="追加">
+      <input type="submit" name="submit" value="add_thread">
     </form>
     <!-- DBにタイトルを決めて登録 -->
   </section>
 
-<!-- for文でtitleを表示 -->
+  <!-- for文でtitleを表示 -->
   <div class="grid">
     <?php foreach ($data as $val) : ?>
-      <div class="item" data-thread-id="<?= $val["id"] ;?>">
+      <div class="item" data-thread-id="<?= $val["id"]; ?>">
         <p><?= $val["title"]; ?></p>
       </div>
-      <?php endforeach; ?> 
+    <?php endforeach; ?>
   </div>
 
   <script src="./JS/main.js"></script>
