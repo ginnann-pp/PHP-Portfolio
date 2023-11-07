@@ -21,10 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($selectedSubmit_index) {
       case 'reset_thread_ID':
         echo "restがおされました";
+        reset_session_ID($pdo);
+        header('Location: ' . SITE_URL);
         break;
 
       case 'add_thread':
         echo "add_trheadがおされました";
+        add_todo($pdo);
+        header('Location: ' . SITE_URL);
+        exit;
         break;
 
       default:
@@ -33,11 +38,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     echo "選択されていません";
   }
-  // add_todo($pdo);
-  // header('Location: ' . SITE_URL);
-  // exit;
 } else {
   echo "POST送信されていません";
+}
+
+// user_thread_IDを0にして、sessions_IDを更新
+function reset_session_ID($pdo) {
+  $user_ID = $_SESSION['user-thread-id'];
+
+  $sql = "UPDATE `users` SET `thread-id` = '0' WHERE `users`.`id` = :user_ID";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue('user_ID', $user_ID, PDO::PARAM_INT);
+  $stmt->execute();
+
+  // sessionも0に変更
+  $_SESSION['user-thread-id'] = 0;
 }
 
 // DBに追加
@@ -54,7 +69,6 @@ function add_todo($pdo)
   $stmt->execute();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -108,3 +122,9 @@ function add_todo($pdo)
 </body>
 
 </html>
+
+<script>
+  confirm('掲示板から離席しますか？') {
+    
+  }
+</script>
