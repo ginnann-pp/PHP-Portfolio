@@ -12,6 +12,9 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 
+// ログインしているか判断
+if (isset($_SESSION['user-id'])) {
+
 // 使用関数群
 // fomr内容を取得してDBに登録
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -40,6 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 } else {
   echo "POST送信されていません";
+}
+
+} else{
+  echo 'ログインしていないと使えない機能です';
 }
 
 // user_thread_IDを0にして、sessions_IDを更新
@@ -81,12 +88,22 @@ function add_todo($pdo)
 
 <body>
 
-  <h1>threadID:<?= $_SESSION['threadID']; ?></h1>
-  <h1>userID: <?= $_SESSION['user-thread-id']; ?></h1>
-  <h1><?= $_SESSION['userName']; ?></h1>
+  <?php if(!empty($_SESSION['user-id'])) { ?>
+    <h1>ログインしています</h1>
+    <h1>threadID:<?= $_SESSION['threadID']; ?></h1>
+    <h1>userID: <?= $_SESSION['user-thread-id']; ?></h1>
+    <h1><?= $_SESSION['userName']; ?></h1>
 
-  <h1><a href="./screens/log-in.php">ログイン</a></h1>
+  <?php }else {  ?>
+    <h1>ログインしていません</h1>
+  <?php } ?>
+
   <!-- アカウントログイン -->
+  <h1><a href="./screens/log-in.php">ログイン</a></h1>
+
+  <!-- アカウントのログアウトボタン -->
+  <h1><a href="./screens/log_out.php">ログアウト</a></h1>
+
   <header>
     <div class="app-header">
       <h3>掲示板アプリ</h3>
@@ -120,11 +137,4 @@ function add_todo($pdo)
   <script src="./JS/main.js"></script>
 
 </body>
-
 </html>
-
-<script>
-  confirm('掲示板から離席しますか？') {
-    
-  }
-</script>
