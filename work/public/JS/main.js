@@ -11,19 +11,23 @@ items.forEach(item => {
         })
         .then(response => response.json())
         .then(res => {
-            if (res.respons_ID === threadId) {
-                // 自分IDとクリックした掲示板IDが同じ場合
-                alert('あたいが同じなので画面移動');
-                window.location.href = '../screens/chat.php'
-            } else if(res.respons_ID === 0) {
-                // 自分のIDが０でどこにもログインしていない場合
-                if(confirm('ログインしていないがこの掲示板にはいりますか？')) {
+            if (res.login_check !== 'true') {
+                if (res.respons_ID === threadId) {
+                    // 自分IDとクリックした掲示板IDが同じ場合
+                    alert('あたいが同じなので画面移動');
                     window.location.href = '../screens/chat.php'
+                } else if(res.respons_ID === 0) {
+                    // 自分のIDが０でどこにもログインしていない場合
+                    if(confirm('ログインしていないがこの掲示板にはいりますか？')) {
+                        window.location.href = '../screens/chat.php'
+                    } else {
+                        return;
+                    }
                 } else {
-                    return;
+                    alert('他の掲示板にログインしているので入れません')
                 }
             } else {
-                alert('他の掲示板にログインしているので入れません')
+                alert('ログインしてください');
             }
         })
         .catch(error => {
