@@ -4,11 +4,9 @@ session_start();
 $raw = file_get_contents('php://input');
 $data = json_decode($raw);
 
-// DBでクリックされた掲示板のIDを保持している人数を検索
-// 5人以下なら
-// 5人以上なら
 
-if (!empty($_SESSION['user-thread-id'])) {
+if (isset($_SESSION['user-thread-id'])) {
+
     // セッションに保存されている値を取得
     $user_ID = $_SESSION['user-thread-id'];
 
@@ -35,10 +33,11 @@ if (!empty($_SESSION['user-thread-id'])) {
     }
 } else {
     $response = [
-        "message"  =>'ログインしていないと使えない機能です',
-        "login_check" => 'true'
+        "message" => 'ログインしていないと使えない機能です',
+        "login_check" => false
     ];
 }
+
 
 
 // ヘッダーを設定してJSONレスポンスを返す
