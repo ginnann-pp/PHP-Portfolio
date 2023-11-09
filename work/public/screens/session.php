@@ -4,42 +4,30 @@ session_start();
 $raw = file_get_contents('php://input');
 $data = json_decode($raw);
 
-
-if (isset($_SESSION['user-thread-id'])) {
-
-    // セッションに保存されている値を取得
-    $user_ID = $_SESSION['user-thread-id'];
-
-    // JavaScriptから送信された値とセッションの値を比較
-    if ($data->threadId == $user_ID) {
-        // 一致する場合の処理
-        $response = [
-            "message" => "一致しました",
-            "respons_ID" => $data->threadId
-        ];
-        $_SESSION['threadID'] = $data->threadId;
-    } else if ($user_ID === 0) {
-        // UserIDが0の場合
-        $response = [
-            "message" => "あたいがゼロなので観覧モード",
-            "respons_ID" => $user_ID
-        ];
-        $_SESSION['threadID'] = $data->threadId;
-    } else {
-        // 他の掲示板にログインをしているので画面移動はなし
-        $response = [
-            "message" => "他の掲示板にログインしているので画面移動はできません",
-        ];
-    }
-} else {
-    $response = [
-        "message" => 'ログインしていないと使えない機能です',
-        "login_check" => false
+function createResponse($message, $responsId = null)
+{
+    return [
+        "message" => $message,
+        "respons_ID" => $responsId
     ];
 }
 
+if (isset($_SESSION['user-thread-id'])) {
+    $userThreadId = $_SESSION['user-thread-id'];
 
+    if ($data->threadId == $userThreadId) {
+        $response = createResponse("一致しました", $data->threadId);
+        $_SESSION['threadID'] = $data->threadId;
+    } else if ($userThreadId === 0) {
+        $response = createResponse("あたいがゼロなので観覧モード", $userThreadId);
+        $_SESSION['threadID'] = $data->threadId;
+    } else {
+        $response = createResponse("他の掲示板にログインしているので画面移動はできません");
+    }
+} else {
+    $response = createResponse('ログインしていないと使えない機能です', false);
+}
 
-// ヘッダーを設定してJSONレスポンスを返す
 header('Content-Type: application/json');
 echo json_encode($response);
+

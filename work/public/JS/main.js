@@ -11,7 +11,7 @@ items.forEach(item => {
         })
         .then(response => response.json())
         .then(res => {
-            if (res.login_check !== false) {
+            if (res.respons_ID !== false) {
                 if (res.respons_ID === threadId) {
                     // 自分IDとクリックした掲示板IDが同じ場合
                     alert('あたいが同じなので画面移動');
