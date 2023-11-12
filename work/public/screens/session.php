@@ -4,12 +4,23 @@ session_start();
 $raw = file_get_contents('php://input');
 $data = json_decode($raw);
 
+// レスポンス共通関数
 function createResponse($message, $responsId = null)
 {
     return [
         "message" => $message,
         "respons_ID" => $responsId
     ];
+}
+
+// クリック掲示板のログイン人数
+function getActiveUserCount ($pdo, $threadId) {
+    $sql="SELECT COUNT(DISTINCT user_id) as count FROM sessions WHERE thread_id = :threadId";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':threadId', $threadId, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['count'];
 }
 
 if (isset($_SESSION['user-thread-id'])) {
