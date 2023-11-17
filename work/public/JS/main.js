@@ -32,6 +32,7 @@ items.forEach(item => {
             } else {
                 alert('ログインしてください');
             }
+
         })
         .catch(error => {
             console.log(error);
