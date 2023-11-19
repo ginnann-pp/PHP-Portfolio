@@ -15,42 +15,42 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC); //連想配列で取得
 // ログインしているか判断
 if (isset($_SESSION['user-id'])) {
 
-// 使用関数群
-// fomr内容を取得してDBに登録
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (isset($_POST['submit'])) {
-    $selectedSubmit_index = $_POST['submit'];
+  // 使用関数群
+  // fomr内容を取得してDBに登録
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['submit'])) {
+      $selectedSubmit_index = $_POST['submit'];
 
-    switch ($selectedSubmit_index) {
-      case 'reset_thread_ID':
-        echo "restがおされました";
-        reset_session_ID($pdo);
-        header('Location: ' . SITE_URL);
-        break;
+      switch ($selectedSubmit_index) {
+        case 'reset_thread_ID':
+          echo "restがおされました";
+          reset_session_ID($pdo);
+          header('Location: ' . SITE_URL);
+          break;
 
-      case 'add_thread':
-        echo "add_trheadがおされました";
-        add_todo($pdo);
-        header('Location: ' . SITE_URL);
-        exit;
-        break;
+        case 'add_thread':
+          echo "add_trheadがおされました";
+          add_todo($pdo);
+          header('Location: ' . SITE_URL);
+          exit;
+          break;
 
-      default:
-        echo "不明なオプションです";
+        default:
+          echo "不明なオプションです";
+      }
+    } else {
+      echo "選択されていません";
     }
   } else {
-    echo "選択されていません";
+    echo "POST送信されていません";
   }
 } else {
-  echo "POST送信されていません";
-}
-
-} else{
   echo 'ログインしていないと使えない機能です';
 }
 
 // user_thread_IDを0にして、sessions_IDを更新
-function reset_session_ID($pdo) {
+function reset_session_ID($pdo)
+{
   $user_ID = $_SESSION['user-thread-id'];
 
   $sql = "UPDATE `users` SET `thread-id` = '0' WHERE `users`.`id` = :user_ID";
@@ -83,18 +83,22 @@ function add_todo($pdo)
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/basic.css">
+  <link rel="stylesheet" href="./css/thread.css">
+  <link rel="stylesheet" href="./css/footer.css">
   <title>Document</title>
 </head>
 
 <body>
 
-  <?php if(!empty($_SESSION['user-id'])) { ?>
+  <?php if (!empty($_SESSION['user-id'])) { ?>
     <h1>ログインしています</h1>
     <h1>threadID:<?= $_SESSION['threadID']; ?></h1>
     <h1>userID: <?= $_SESSION['user-thread-id']; ?></h1>
     <h1><?= $_SESSION['userName']; ?></h1>
 
-  <?php }else {  ?>
+  <?php } else {  ?>
     <h1>ログインしていません</h1>
   <?php } ?>
 
@@ -105,11 +109,14 @@ function add_todo($pdo)
   <h1><a href="./screens/log_out.php">ログアウト</a></h1>
 
   <header>
-    <div class="app-header">
-      <h3>掲示板アプリ</h3>
-      <p>ユーザー名</p>
+    <div class="header_inner">
+      <h1>掲示板アプリ</h1>
+      <div>
+        <button>ログイン</button>
+      </div>
     </div>
   </header>
+
 
   <!-- Thrad=IDの初期化 -->
   <form action="" method="POST">
@@ -126,15 +133,21 @@ function add_todo($pdo)
   </section>
 
   <!-- for文でtitleを表示 -->
-  <div class="grid">
-    <?php foreach ($data as $val) : ?>
-      <div class="item" data-thread-id="<?= $val["id"]; ?>">
-        <p><?= $val["title"]; ?></p>
-      </div>
-    <?php endforeach; ?>
-  </div>
+  <section>
+    <ul class="thread_items grid">
+      <?php foreach ($data as $val) : ?>
+        <li class="item" data-thread-id="<?= $val["id"]; ?>">
+          <h3 class="thread_titel"><?= $val["title"]; ?></h3>
+          <span></span>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  </section>
+
+  <footer>
+  </footer>
 
   <script src="./JS/main.js"></script>
-
 </body>
+
 </html>

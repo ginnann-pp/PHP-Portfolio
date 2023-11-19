@@ -1,17 +1,4 @@
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.app-header {
-
-  background-color: #6577c5;
-  display: flex;
-  justify-content: space-around;
-}
+/* スレッド一覧 */
 .grid {
     margin-left: 10%;
     margin-right: 10%;
@@ -20,17 +7,20 @@ header {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
   .item {
-    border-radius: 10px;
     background: #edf;
-    padding: 15px;
     text-align: center;
   }
-  p {
-    text-align: left;
+  .thread_items  li{
+    background-color: white;
+    border-left: solid 5px green;
+    cursor: pointer;  
   }
-
-  div {
-    cursor: pointer;
+  
+  .thread_titel {
+      background-image : linear-gradient(to right, #000, #000 2px, transparent 2px, transparent 8px);  /* 幅2の線を作る */
+    background-size: 8px 1px;          /* グラデーションの幅・高さを指定 */
+    background-position: left bottom;  /* 背景の開始位置を指定 */
+    background-repeat: repeat-x;       /* 横向きにのみ繰り返す */
   }
 
 
@@ -73,3 +63,10 @@ input[type="submit"]:hover {
 section {
   margin-bottom: 40px;
 }
+
+
+
+
+
+/*  */
+
