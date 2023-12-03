@@ -91,28 +91,12 @@ function add_todo($pdo)
 </head>
 
 <body>
-
-  <?php if (!empty($_SESSION['user-id'])) { ?>
-    <h1>ログインしています</h1>
-    <h1>threadID:<?= $_SESSION['threadID']; ?></h1>
-    <h1>userID: <?= $_SESSION['user-thread-id']; ?></h1>
-    <h1><?= $_SESSION['userName']; ?></h1>
-
-  <?php } else {  ?>
-    <h1>ログインしていません</h1>
-  <?php } ?>
-
-  <!-- アカウントログイン -->
-  <h1><a href="./screens/log-in.php">ログイン</a></h1>
-
-  <!-- アカウントのログアウトボタン -->
-  <h1><a href="./screens/log_out.php">ログアウト</a></h1>
-
   <header>
     <div class="header_inner">
       <h1>掲示板アプリ</h1>
       <div>
-        <button>ログイン</button>
+        <button><a href="./screens/log-in.php">ログイン</a></button>
+        <button><a href="./screens/log_out.php">ログアウト</a></button>
       </div>
     </div>
   </header>
